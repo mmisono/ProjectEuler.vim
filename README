@@ -1,4 +1,4 @@
-VimからProjectEuler(http://projecteuer.net/)の問題を閲覧したり解答したりするプラグインです。
+VimからProjectEuler (http://projecteuer.net/) の問題を閲覧したり解答したりするプラグインです。
 インストール方法:
   - plugin/projecteuler.vim
   - syntax/projecteuler.vim
@@ -6,4 +6,4 @@ VimからProjectEuler(http://projecteuer.net/)の問題を閲覧したり解答�
   - doc/projecteuler.jax
   - projecteuler/ (空ディレクトリ)
 以上のファイル&ディレクトリを~/.vimや$HOME\vimfilesに置くか、runtimepathに追加して下さい。
-:helptag path-to/doc/ でヘルプが追加されます。
+:helptags path-to/doc/ でヘルプが追加されます。
