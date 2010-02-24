@@ -1,0 +1,113 @@
+*projecteuler.txt*			VimからProjectEuler
+
+バージョン: 1.00
+作者: mfumi <m.fumi760@gmail.com>
+ライセンス: NYSL
+
+==============================================================================
+内容											*projecteuler-contents*
+
+紹介				|projecteuler-introduction|
+コマンド			|projecteuler-commands|
+変数				|projecteuler-variables|
+問題点				|projecteuler-bugs|
+Changelog			|projecteuler-changelog|
+
+==============================================================================
+紹介											*projecteuler-introduction*
+
+*projecteuler.vim* はVimからProjectEulerの問題を取得・閲覧したり、解答した
+りするためのプラグインです。ProjectEulerはプログラムで解く数学の問題集です。
+詳しくは [http://projecteuler.net/] を参考にして下さい。日本語での情報は
+[http://odz.sakura.ne.jp/projecteuler/] にあります。
+
+==============================================================================
+コマンド										*projecteuler-commands*
+
+:ProjectEuler [id]								*:ProjectEluer*
+	Probrem <id> の回答をProjectEulerに投稿。
+	idが指定されなければ現在のファイル名から推測します。
+	推測できなければ尋ねます。
+
+:ProjectEuler -l [pagener]						*:ProjectEuler-l*
+	問題のリストを表示。
+	<pagenr>を指定すればそのページのリストを表示します。
+
+:ProjectEuler -p [id]							*:ProjectEuler-p*
+	Probrem <id> の問題を表示。
+	idが指定されなければ現在のファイル名から推測します。
+	推測できなければ尋ねます。
+
+:ProjectEuler -s								*:ProjectEuler-s*
+	自分のプロファイルを表示。
+
+:ProjectEuler -c								*:ProjectEuler-c*
+	現在開いている問題の言語を入れ替える。
+
+:ProjectEuler -o [id]							*:ProjectEuler-o*
+	Probrem <id> の問題のページをブラウザで開く
+	idが指定されなければ現在のファイル名から推測します。
+	推測できなければ尋ねます。
+
+:ProjectEuler -u [username]						*:ProjectEuler-u*	
+	<username>が与えられたらユーザーを切り替えます。
+	そうでなければ、現在のユーザー名を表示します。
+
+:ProjectEuler -r
+	現在のユーザーで強制的に再ログインします。	*:ProjectEuler-r*
+	Vimを使用中にCookieの有効期限が切れてしまった時に行って下さい。
+
+==============================================================================
+変数											*projecteuler-variables*	
+
+g:projecteuler_user
+	ProjectEulerにログインするデフォルトのユーザー名。
+
+g:projecteuler_base_dir
+	ProjectEulerの問題やCookie等を保存するためのディレクトリ。
+	デフォルトではプラグインのおかれたディレクトリから../projecteulerとなります。
+	このディレクトリはあらかじめ作成する必要があります。
+
+g:gist_browser_command
+	ProjectEulerの問題等を閲覧するブラウザ。
+	let g:projecteuler_browser_command = "コマンド名 %URL% &"
+	みたいに設定して下さい。
+
+g:projecteuler_audio_play_command
+	CAPTCHAの音声を再生するためのコマンド。
+	let g:projecteuler_audio_play_command = "コマンド名 %AUDIO% &"
+	みたいに設定して下さい。
+
+g:projecteuler_hold_cookie
+	ProjectEulerのCookieを保存するかどうか。
+	0:保存しない(Vim終了時に破棄)	1:保存する
+	デフォルトでは保存します。
+
+g:projecteuler_see_next
+	問題を正解したあと次の問題を表示するかどうか。
+	0:表示しない	1:表示する
+	デフォルトでは尋ねます。
+
+g:projecteuler_open_forum
+	問題を正解したあとフォーラムをブラウザで開くかどうか。
+	0:開かない		1:開く
+	デフォルトでは開きません。
+
+g:projecteuler_problem_lang
+	問題を取得・閲覧する際の言語を設定します。
+	let g:projecteuler_problem_lang = "ja"
+	とすれば日本語の問題文を取得・閲覧します。
+	デフォルトでは英語です。
+
+==============================================================================
+問題点											*projecteuler-bugs*
+
+すでに正解している問題でも解答を送信できる(そのまま成否が判定されます)。
+
+==============================================================================
+Changelog										*projecteuler-changelog*
+
+1.00	2010-2-24
+	-	とりあえず完成
+
+vim: ft=help : ts=4
