@@ -2,8 +2,8 @@
 " File: Projecteuler.vim
 " Author: mfumi
 " Email: m.fumi760@gmail.com
-" Last Change: 24-02-2010 
-" Version: 1.00
+" Last Change: 25-02-2010 
+" Version: 1.01
 " Usage:
 "
 " 	:ProjectEuler [id]
@@ -90,6 +90,7 @@
 " Bug:
 " 	すでに正解している問題でも解答を送信できる(そのまま成否が判定される)
 
+scriptencoding utf-8
 
 "スクリプトの設定
 if &cp || (exists('g:loaded_projecteuler_vim') && g:loaded_projecteuler_vim) "{{{
@@ -104,11 +105,6 @@ if !executable('curl')
 	finish
 endif 
 
-"iconvの確認
-if !has('iconv')
-	echoerr "ProjectEuler.vim: 'iconv required'"
-	finish
-endif
 
 "ホームページを閲覧するブラウザ 
 if !exists('g:projecteuler_browser_command')
@@ -195,7 +191,7 @@ endif
 "ログイン失敗:空文字列を返す
 function! s:ProjectEulerLogin() "{{{
 	if !exists('g:projecteuler_user') 
-		let g:projecteuler_user = input(iconv("ユーザー名を入力して下さい(Username): ","utf-8",&enc))
+		let g:projecteuler_user = input("ユーザー名を入力して下さい(Username): ")
 	endif
 
 
@@ -207,8 +203,7 @@ function! s:ProjectEulerLogin() "{{{
 	if filereadable(cookie_file)
 		let reply = system(s:curl_cmd . ' "' . s:projecteuler_base_url . 'login" ' . ' -b "'.  cookie_file .'"')
 		if reply =~ 'Logged in as'
-			let str =  g:projecteuler_user . iconv('でログインしてます ',"utf-8",&enc)
-			echo str
+			echo  g:projecteuler_user . 'でログインしてます '
 			let s:projecteuler_login = 1
 			call s:ProjectEulerAddUser()
 			let s:projecteuler_cookie_file = cookie_file
@@ -219,22 +214,22 @@ function! s:ProjectEulerLogin() "{{{
 	endif
 
 	" パスワードでログイン
-	let password = inputsecret(iconv('パスワードを入力して下さい(Password): ',"utf-8",&enc))
+	let password = inputsecret('パスワードを入力して下さい(Password): ')
 
 	if !strlen(password)
-		echo iconv('キャンセルしました(Cancelled)',"utf-8",&enc)
+		echo 'キャンセルしました(Cancelled)'
 		return
 	endif
 
 	let content = system(s:curl_cmd . ' "' . s:projecteuler_base_url . 'login"' . ' -d "username=' . g:projecteuler_user . '" -d "password=' . password . '" -d "login=Login"'.  ' -c "' . cookie_file .'"')
 
 	if content =~ 'Login successful'
-		echo iconv('ログインしました(Login successful)',"utf-8",&enc)
+		echo 'ログインしました(Login successful)'
 		let s:projecteuler_login = 1
 		call s:ProjectEulerAddUser()
 		let s:projecteuler_cookie_file = cookie_file
 	else
-		echo iconv('ログインに失敗しました(Login failed)',"utf-8",&enc)
+		echo 'ログインに失敗しました(Login failed)',"utf-8"
 		let s:projecteuler_cookie_file = ''
 		call delete(cookie_file)
 	endif
@@ -265,7 +260,7 @@ function! s:ProjectEulerPost(id) "{{{
 		if strlen(s:projecteuler_cookie_file) == 0 |return| endif
 	endif
 
-	let id = s:ProjectEulerID(a:id , iconv("回答する ","utf-8",&enc))
+	let id = s:ProjectEulerID(a:id , "回答する")
 	if strlen(id) == 0 |return |endif
 
 	"CAPTCHAの音声ファイルをダウンロード&再生
@@ -273,8 +268,8 @@ function! s:ProjectEulerPost(id) "{{{
 	let audio_file = '"' . audio_file_save . '"'
 
 	if !exists('g:projecteuler_audio_play_command')
-		echo iconv("CAPTCHA音声を再生するコマンドが指定されていません ","utf-8",&enc)
-		echo iconv("g:projecteuler_audio_play_command を設定して下さい ","utf-8",&enc)
+		echo "CAPTCHA音声を再生するコマンドが指定されていません "
+		echo "g:projecteuler_audio_play_command を設定して下さい "
 		return
 	endif
 
@@ -287,8 +282,7 @@ function! s:ProjectEulerPost(id) "{{{
 		let audio_file = substitute(audio_file,'\\','\\\\','g')
 	endif
 	let cmd = substitute(g:projecteuler_audio_play_command, '%AUDIO%',audio_file,'g')
-	let str = iconv("問題 ","utf-8",&enc) . id . iconv("に解答します " ,"utf-8",&enc)
-	echo str
+	echo "問題" . id . "に解答します"
 	"CAPTCHAの入力
 	let confirm = ''
 	while strlen(confirm) == 0
@@ -299,13 +293,13 @@ function! s:ProjectEulerPost(id) "{{{
 		else
 			call system(cmd)
 		endif
-		let confirm = input(iconv("数字を入力して下さい(CAPTCHA): ","utf-8",&enc))
+		let confirm = input("数字を入力して下さい(CAPTCHA): ")
 	endwhile
 	"解答の入力
 	"入力が空の場合入力を繰り返す
 	let guess = ''
 	while strlen(guess) == 0
-		let guess = input(iconv("解答を入力して下さい(GUESS): ","utf-8",&enc))
+		let guess = input("解答を入力して下さい(GUESS): ")
 	endwhile
 
 	"解答を送信
@@ -316,7 +310,7 @@ function! s:ProjectEulerPost(id) "{{{
 	redraw!
 	"成否を判定
 	if reply =~ 'Congratulations'
-		echo iconv("\n正解です ","utf-8",&enc)
+		echo "\n正解です "
 		"フォーラムをブラウザで開く
 		if  g:projecteuler_open_forum == 1
 			let url = '"' . s:projecteuler_base_url . 'forum\&id=' . id  . '"'
@@ -326,17 +320,17 @@ function! s:ProjectEulerPost(id) "{{{
 		if  g:projecteuler_see_next == 1
 			call s:ProjectEulerProblem(id+1)
 		elseif g:projecteuler_see_next != 0
-			let next = input(iconv("次の問題を見ますか? [yes]: ","utf-8",&enc))
+			let next = input("次の問題を見ますか? [yes]: ")
 			if strlen(next) == 0 || next =~ "^y"
 				call s:ProjectEulerProblem(id+1)
 			endif
 		endif
 	elseif reply =~ 'Sorry'
-		echo guess . iconv(' は不正解です ',"utf-8",&enc)
+		echo guess . ' は不正解です '
 	elseif reply =~ 'WARNING'
-		echo iconv('30秒待ってから投稿して下さい ',"utf-8",&enc)
+		echo '30秒待ってから投稿して下さい '
 	else
-		echo iconv('入力したCAPTCHA用の数字が正しくありませんでした ',"utf-8",&enc)
+		echo '入力したCAPTCHA用の数字が正しくありませんでした '
 	endif
 	return
 endfunction "}}}
@@ -409,7 +403,7 @@ endfunction "}}}
 "ProjectEulerの問題を表示
 "問題はg:projecteuler_dirに保存する
 function! s:ProjectEulerProblem(id) "{{{
-	let id = s:ProjectEulerID(a:id,iconv("表示する ","utf-8",&enc))
+	let id = s:ProjectEulerID(a:id,"表示する ")
 	if strlen(id) == 0 | return | endif
 
 	"問題文の言語を決める
@@ -506,7 +500,7 @@ function! s:ProjectEulerGetText() "{{{
 	if txtpos != -1
 		if col(".") > txtpos && col(".") <= txtpos + len(txt)
 			call system( s:curl_cmd . ' "' . s:projecteuler_txt_url . txt . '" -o "' . g:projecteuler_dir . txt . '"')
-			echo txt . iconv("をダウンロードしました","utf-8",&enc)
+			echo txt . "をダウンロードしました"
 		endif
 	endif
 endfunction
@@ -515,7 +509,7 @@ endfunction
 
 "ProjectEulerの問題をブラウザで開く
 function! s:ProjectEulerOpen(id) "{{{
-	let id = s:ProjectEulerID(a:id,iconv("ブラウザで開く ","utf-8",&enc))
+	let id = s:ProjectEulerID(a:id,"ブラウザで開く ")
 	if strlen(id) == 0 | return | endif
 
 	let url = '"' . s:projecteuler_base_url . 'problems\&id=' . id  . '"'
@@ -531,10 +525,10 @@ function! s:ProjectEulerID(id,str) "{{{
 	if strlen(a:id) == 0
 		let id = substitute(expand("%:r"),'\D','','g')
 		if strlen(id) == 0
-			let str = substitute(a:str,' ','','g') . iconv("問題番号を入力して下さい: ","utf-8",&enc)
+			let str = a:str . "問題番号を入力して下さい: "
 			let id = input(str)
 			if strlen(id) == 0
-				echo iconv("キャンセルしました","utf-8",&enc) 
+				echo "キャンセルしました"
 			endif
 		endif
 		return id
@@ -681,7 +675,7 @@ function! s:ProjectEulerChangeProblem() "{{{
 		endif
 	endfor
 	if bufexist == 0
-		echo iconv("問題が開かれてません","utf-8",&enc)
+		echo "問題が開かれてません"
 		return
 	endif
 
@@ -743,7 +737,7 @@ function! s:ProjectEuler(...) "{{{
 			endif
 		endif
 	else
-		echo iconv("無効な引数です","utf-8",&enc)
+		echo "無効な引数です"
 		return 
 	endif
 endfunction "}}}
