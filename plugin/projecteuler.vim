@@ -360,7 +360,7 @@ function! s:ProjectEulerList(pagenr) "{{{
 	silent %d _
 	exec 'silent 0r!' . s:curl_cmd . ' "' . s:projecteuler_base_url . 'problems&page=' . pagenr . '"' 
 	silent! %s/<\/b>/\t/g
-	silent! %s/\d\+<\/div>//g
+	silent! %s/\(\d\+\)<\/div>/\t\1/g
 	silent! %s/<sup>/^/g
 	silent! %s/<.\{-}>//g
 	silent! %s/&gt;/</g

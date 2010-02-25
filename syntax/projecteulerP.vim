@@ -1,3 +1,4 @@
+scriptencoding utf-8
 syn case ignore
 syn match ProjectEulerProblem		"^Problem \d\+\s*$"
 syn match ProjectEulerDate			"^\d\d \u\l\+ \d\d\d\d$"
