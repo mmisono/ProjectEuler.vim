@@ -1,3 +1,4 @@
+"問題表示用syntax
 scriptencoding utf-8
 syn case ignore
 syn match ProjectEulerProblem		"^Problem \d\+\s*$"

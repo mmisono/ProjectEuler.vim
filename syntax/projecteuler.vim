@@ -1,20 +1,12 @@
+"リスト表示用syntax
 syn case ignore
-syn match ProjectEulerSolved		"Solved[^:]"
-syn match ProjectEulerUnsolved		"Unsolved[^:]"
-syn match ProjectEulerCategory		"^.\{-1,15}:"he=e-1
-syn match ProjectEulerID			"\d\+\t"he=e-1
-syn match ProjectEulerSolvedBy		"\t\d\+"
+syn match ProjectEulerID			"^\d\+\t"he=e-1
+syn match ProjectEulerSolvedBy		"\d\+$"
+syn match projectEulerPage			"^Page:"he=e-1
 
 
-hi link ProjectEulerSolved			Special
-hi link ProjectEulerUnsolved		Constant
-hi link ProjectEulerCategory		Label
-hi link ProjectEulerID				Underlined
+hi link ProjectEulerPage			Label
 hi link ProjectEulerSolvedBy		Special
-hi link ProjectEulerProblem			Constant
-hi link ProjectEulerDate			Underlined
-hi link ProjectEulerText			Constant
-hi link ProjectEulerNote			Todo
-hi link ProjectEulerHint			Todo
+hi link ProjectEulerID				Underlined
 
 "vim : fileencoding = utf8 : ts = 4

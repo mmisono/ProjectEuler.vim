@@ -386,6 +386,7 @@ function! s:ProjectEulerList(pagenr) "{{{
 	silent! g/title/d
 	silent! g/-->/d
 	silent! %s/\r//g
+	silent! %s/\n\t\(\d\+\)$/\t\1/g
 	silent! g/^\s*$/d
 	silent! $s/\(\d\)/\1 /g
 	silent! nohl
@@ -616,7 +617,7 @@ function! s:ProjectEulerProfile() "{{{
 	setl nomodifiable
 	setl readonly
 	setl bufhidden=delete
-	setl ft=projecteuler
+	setl ft=projecteulerS
 	nnoremap <buffer> <silent> <CR> :call <SID>ProjectEulerOpenProblemFromProfile()<CR>
 	return
 endfunction "}}}

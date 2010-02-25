@@ -3,6 +3,7 @@ VimからProjectEuler ( http://projecteuler.net/ ) の問題を閲覧したり�
   - plugin/projecteuler.vim
   - syntax/projecteuler.vim
   - syntax/projecteulerP.vim
+  - syntax/projecteulerS.vim
   - doc/projecteuler.jax
   - projecteuler/ (空ディレクトリ)
 以上のファイル&ディレクトリを~/.vimや$HOME\vimfilesに置くか、runtimepathに追加して下さい。
